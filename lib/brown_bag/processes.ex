@@ -3,16 +3,20 @@ defmodule Processes do
   Example usage:
 
       pid = spawn(Processes, :say, [])
-      Process.alive?(pid)
       send(pid, {self, "hello"})
+      flush
+
       send(pid, {self, "hello"})
-      Process.alive?(pid)
+      receive do
+        msg -> IO.puts("handled msg: " <> msg)
+      end
   """
 
   def say do
     receive do
       {from, msg} ->
         IO.puts "Process #{inspect self} says: #{msg}"
+        send(from, "hello yourself")
         say
     end
   end

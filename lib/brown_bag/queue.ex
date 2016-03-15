@@ -24,6 +24,10 @@ defmodule Queue do
     GenServer.call queue, :size
   end
 
+  def stop(client) do
+    GenServer.call client, :stop
+  end
+
   # Private API ############
 
   def init( _args ) do
@@ -52,6 +56,10 @@ defmodule Queue do
 
   def handle_call(:size, _from, %{queue: queue} = state) do
     {:reply, :queue.len(queue), state}
+  end
+
+  def handle_call(:stop, _from, status) do
+    {:stop, :normal, status}
   end
 
 end

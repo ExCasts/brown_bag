@@ -34,6 +34,11 @@ defmodule Queue do
     {:ok, %{queue: :queue.new}}
   end
 
+  def terminate( reason, state ) do
+    IO.puts "Stopped for reason: #{reason}"
+    :ok
+  end
+
   def handle_cast(:empty, state) do
     {:noreply, %{state | queue: :queue.new}}
   end

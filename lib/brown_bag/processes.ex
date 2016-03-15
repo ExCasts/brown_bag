@@ -5,7 +5,7 @@ defmodule Processes do
       pid = spawn(Processes, :say, [])
       Process.alive?(pid)
       send(pid, {self, "hello"})
-      send(pid, {self, "hello"}) # no output this time
+      send(pid, {self, "hello"})
       Process.alive?(pid)
   """
 
@@ -13,6 +13,7 @@ defmodule Processes do
     receive do
       {from, msg} ->
         IO.puts "Process #{inspect self} says: #{msg}"
+        say
     end
   end
 end

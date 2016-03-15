@@ -31,6 +31,8 @@ defmodule Queue do
   # Private API ############
 
   def init( _args ) do
+    Process.flag(:trap_exit, true)
+
     {:ok, %{queue: :queue.new}}
   end
 
@@ -65,6 +67,12 @@ defmodule Queue do
 
   def handle_call(:stop, _from, status) do
     {:stop, :normal, status}
+  end
+
+  def handle_info( {:EXIT, _from, reason}, state) do
+    IO.puts "Handling :EXIT, with reason: #{inspect reason}"
+    #{:stop, :normal, state}
+    {:noreply, state}
   end
 
   def handle_info(msg, state) do

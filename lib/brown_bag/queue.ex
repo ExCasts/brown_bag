@@ -8,6 +8,10 @@ defmodule Queue do
     GenServer.start_link __MODULE__, args, opts
   end
 
+  def enqueue(queue, item) do
+    GenServer.call queue, {:enqueue, item}
+  end
+
   # Private API ############
 
   def init( _args ) do

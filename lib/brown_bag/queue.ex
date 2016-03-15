@@ -14,4 +14,11 @@ defmodule Queue do
     {:ok, %{queue: :queue.new}}
   end
 
+  def handle_call({:enqueue, item}, _from, state) do
+    %{queue: queue} = state
+    queue = :queue.in(item, queue)
+
+    {:reply, :ok, %{state | queue: queue}}
+  end
+
 end

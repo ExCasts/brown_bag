@@ -16,6 +16,14 @@ defmodule Queue do
     GenServer.call queue, {:enqueue, item}
   end
 
+  def next( queue ) do
+    GenServer.call queue, :next
+  end
+
+  def size( queue ) do
+    GenServer.call queue, :size
+  end
+
   # Private API ############
 
   def init( _args ) do
@@ -31,6 +39,19 @@ defmodule Queue do
     queue = :queue.in(item, queue)
 
     {:reply, :ok, %{state | queue: queue}}
+  end
+
+  def handle_call(:next, _from, %{queue: queue} = state) do
+    case :queue.out(queue) do
+      {{:value, item}, queue} ->
+        {:reply, {:ok, item}, %{state | queue: queue}}
+      {:empty, {[], []}} ->
+        {:reply, :empty, state}
+    end
+  end
+
+  def handle_call(:size, _from, %{queue: queue} = state) do
+    {:reply, :queue.len(queue), state}
   end
 
 end

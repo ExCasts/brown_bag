@@ -2,15 +2,17 @@ defmodule Processes do
 	@moduledoc """
   Example usage:
 
-		  pid = spawn(Processes, :say_hello, [])
-		  pid = pawn(Processes, :say, ["hello world"])
+      pid = spawn(Processes, :say, [])
+      Process.alive?(pid)
+      send(pid, {self, "hello"})
+      send(pid, {self, "hello"}) # no output this time
+      Process.alive?(pid)
   """
 
-  def say_hello do
-    IO.puts "hello"
-  end
-
-  def say(msg) do
-    IO.puts msg
+  def say do
+    receive do
+      {from, msg} ->
+        IO.puts "Process #{inspect self} says: #{msg}"
+    end
   end
 end

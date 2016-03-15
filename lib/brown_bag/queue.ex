@@ -10,4 +10,8 @@ defmodule Queue do
 
   # Private API ############
 
+  def init( _args ) do
+    {:ok, %{queue: :queue.new}}
+  end
+
 end

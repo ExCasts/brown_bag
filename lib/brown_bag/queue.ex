@@ -67,4 +67,9 @@ defmodule Queue do
     {:stop, :normal, status}
   end
 
+  def handle_info(msg, state) do
+    IO.puts "Received unknown message: #{inspect msg}"
+    {:noreply, state}
+  end
+
 end

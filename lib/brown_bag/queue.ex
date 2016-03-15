@@ -8,6 +8,10 @@ defmodule Queue do
     GenServer.start_link __MODULE__, args, opts
   end
 
+  def crash(client) do
+    GenServer.call client, :crash
+  end
+
   def empty( queue ) do
     GenServer.cast queue, :empty
   end
@@ -39,6 +43,11 @@ defmodule Queue do
   def terminate( reason, state ) do
     IO.puts "Stopped for reason: #{reason}"
     :ok
+  end
+
+  def handle_call(:crash, _from, state) do
+    :ok = {:error, "some error"}
+    {:reply, :ok, state}
   end
 
   def handle_cast(:empty, state) do
